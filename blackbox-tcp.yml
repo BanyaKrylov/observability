@@ -1,0 +1,4 @@
+- targets:
+  - 10.3.147.239:9993
+  labels:
+    alias: tcp-connect
