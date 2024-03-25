@@ -1,0 +1,40 @@
+global:
+  resolve_timeout: 5m
+
+route:
+  #group_by: ['alertname']
+  group_wait: 10s
+  group_interval: 10s
+  repeat_interval: 1h
+  receiver: 'telegram'
+  routes:
+    - receiver: "telegram"
+      group_wait: 10s
+      match_re:
+        severity: warning
+      continue: true
+
+    - receiver: "email"
+      group_wait: 10s
+      match_re:
+        severity: critical
+      continue: true
+
+receivers:
+- name: 'telegram'
+  telegram_configs:
+  - bot_token: TOKEN
+    api_url: https://api.telegram.org
+    chat_id: ID
+    parse_mode: ''
+    http_config:
+      proxy_url: 'http://PROXY'
+- name: 'email'
+  email_configs:
+  - to: 'USER@me.com'
+    from: 'USER@gmail.com'
+    smarthost: 'smtp.gmail.com:587'
+    auth_username: 'USER'
+    auth_password: 'PASS'
+    require_tls: true
+

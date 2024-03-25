@@ -1,0 +1,19 @@
+[Unit]
+Description=Alertmanager Service
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=root
+Group=root
+ExecStart=/usr/local/bin/alertmanager \
+  --config.file=/etc/alertmanager/alertmanager.yml \
+  --storage.path=/var/lib/alertmanager \
+  --web.listen-address=:9095
+
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+

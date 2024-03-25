@@ -1,0 +1,12 @@
+groups:
+  - name: test
+    rules:
+      - alert: PrometheusTargetMissing #название алерта
+        expr: up == 0 #условие проверяет внутреннюю метрику прометеуса
+        for: 0m #продолжительность в течение которого должа созраняться проблема для отправки уведомления
+        labels:
+          severity: warning
+        annotations:
+          summary: "Сервис node_exporter недоступен"
+          description: "Возможно сервис node_exporter упал или сервер недоступен"
+
