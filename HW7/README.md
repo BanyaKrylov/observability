@@ -27,7 +27,7 @@ sudo yum install filebeat
 
 3. Настройка Filebeat
 
-sudo vi /etc/filebeat/filebeat.yml
+sudo vim /etc/filebeat/filebeat.yml
 
 4. Проверка конфигурации
 
@@ -39,7 +39,7 @@ sudo yum install metricbeat
 
 6. Настройка Metricbeat
 
-sudo vi /etc/metricbeat/metricbeat.yml
+sudo vim /etc/metricbeat/metricbeat.yml
 
 7. Настройка модулей Metricbeat
 
@@ -49,15 +49,15 @@ sudo metricbeat modules enable postgresql
 
 8. Системный модуль
 
-sudo vi /etc/metricbeat/modules.d/system.yml
+sudo vim /etc/metricbeat/modules.d/system.yml
 
 9. Nginx модуль
 
-sudo vi /etc/metricbeat/modules.d/nginx.yml
+sudo vim /etc/metricbeat/modules.d/nginx.yml
 
 10. PostgreSQL модуль
 
-sudo vi /etc/metricbeat/modules.d/postgresql.yml
+sudo vim /etc/metricbeat/modules.d/postgresql.yml
 
 11. Проверка конфигурации
 
@@ -69,7 +69,7 @@ sudo yum install heartbeat-elastic
 
 13. Настройка Heartbeat
 
-sudo vi /etc/heartbeat/heartbeat.yml
+sudo vim /etc/heartbeat/heartbeat.yml
 
 14. Проверка конфигурации
 
@@ -81,7 +81,7 @@ sudo yum install elasticsearch
 
 17. Настройка Elasticsearch
 
-sudo vi /etc/elasticsearch/elasticsearch.yml
+sudo vim /etc/elasticsearch/elasticsearch.yml
 
 18. Запуск и включение службы Elasticsearch
 
@@ -98,7 +98,7 @@ sudo yum install kibana
 
 21. Настройка Kibana
 
-sudo vi /etc/kibana/kibana.yml
+sudo vim /etc/kibana/kibana.yml
 
 22. Запуск и включение службы Kibana
 
