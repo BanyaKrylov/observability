@@ -9,7 +9,7 @@ Heartbeat должен проверять доступность следующ�
 
 1. Добавление репозитория Elastic
 
-sudo rpm --import https://packages.elastic.co/GPG-KEY-elasticsearch
+rpm --import https://packages.elastic.co/GPG-KEY-elasticsearch
 cat <<EOF | sudo tee /etc/yum.repos.d/elastic.repo
 [elastic-7.x]
 name=Elastic repository for 7.x packages
@@ -23,118 +23,118 @@ EOF
 
 2. Установка Filebeat
 
-sudo yum install filebeat
+yum install filebeat
 
 3. Настройка Filebeat
 
-sudo vim /etc/filebeat/filebeat.yml
+vim /etc/filebeat/filebeat.yml
 
 4. Проверка конфигурации
 
-sudo filebeat test config
+filebeat test config
     
 5. Установка Metricbeat
 
-sudo yum install metricbeat
+yum install metricbeat
 
 6. Настройка Metricbeat
 
-sudo vim /etc/metricbeat/metricbeat.yml
+vim /etc/metricbeat/metricbeat.yml
 
 7. Настройка модулей Metricbeat
 
-sudo metricbeat modules enable system
-sudo metricbeat modules enable nginx
-sudo metricbeat modules enable postgresql
+metricbeat modules enable system
+metricbeat modules enable nginx
+metricbeat modules enable postgresql
 
 8. Системный модуль
 
-sudo vim /etc/metricbeat/modules.d/system.yml
+vim /etc/metricbeat/modules.d/system.yml
 
 9. Nginx модуль
 
-sudo vim /etc/metricbeat/modules.d/nginx.yml
+vim /etc/metricbeat/modules.d/nginx.yml
 
 10. PostgreSQL модуль
 
-sudo vim /etc/metricbeat/modules.d/postgresql.yml
+vim /etc/metricbeat/modules.d/postgresql.yml
 
 11. Проверка конфигурации
 
-sudo metricbeat test config
+metricbeat test config
 
 12. Установка Heartbeat
 
-sudo yum install heartbeat-elastic
+yum install heartbeat-elastic
 
 13. Настройка Heartbeat
 
-sudo vim /etc/heartbeat/heartbeat.yml
+vim /etc/heartbeat/heartbeat.yml
 
 14. Проверка конфигурации
 
-15. sudo heartbeat test config
+15. heartbeat test config
 
 16. Установка Elasticsearch
 
-sudo yum install elasticsearch
+yum install elasticsearch
 
 17. Настройка Elasticsearch
 
-sudo vim /etc/elasticsearch/elasticsearch.yml
+vim /etc/elasticsearch/elasticsearch.yml
 
 18. Запуск и включение службы Elasticsearch
 
-sudo systemctl enable elasticsearch
-sudo systemctl start elasticsearch
+systemctl enable elasticsearch
+systemctl start elasticsearch
 
 19. Проверка статуса Elasticsearch
 
-sudo systemctl status elasticsearch
+systemctl status elasticsearch
 
 20. Установка Kibana
 
-sudo yum install kibana
+yum install kibana
 
 21. Настройка Kibana
 
-sudo vim /etc/kibana/kibana.yml
+vim /etc/kibana/kibana.yml
 
 22. Запуск и включение службы Kibana
 
-sudo systemctl enable kibana
-sudo systemctl start kibana
+systemctl enable kibana
+systemctl start kibana
 
 23. Проверка статуса Kibana
 
-sudo systemctl status kibana
+systemctl status kibana
 
 24. Включение и запуск службы Filebeat
 
-sudo systemctl enable filebeat
-sudo systemctl start filebeat
+systemctl enable filebeat
+systemctl start filebeat
 
 25. Проверка статуса Filebeat
 
-sudo systemctl status filebeat
+systemctl status filebeat
 
 26. Включение и запуск службы Metricbeat
 
-sudo systemctl enable metricbeat
-sudo systemctl start metricbeat
+systemctl enable metricbeat
+systemctl start metricbeat
 
 27. Проверка статуса Metricbeat
 
-sudo systemctl status metricbeat
+systemctl status metricbeat
 
 28. Включение и запуск службы Heartbeat
 
-sudo systemctl enable heartbeat
-sudo systemctl start heartbeat
+systemctl enable heartbeat
+systemctl start heartbeat
 
 29. Проверка статуса Heartbeat
 
-sudo systemctl status heartbeat
+systemctl status heartbeat
 
 30. Настройка индексов для метрик
 
@@ -244,7 +244,7 @@ vim /etc/filebeat/filebeat.yml
 
 6. Перезапуск Filebeat:
 
-sudo systemctl restart filebeat
+systemctl restart filebeat
 
 7. Проверка индексов и политик ILM:
 
@@ -264,7 +264,7 @@ vim /etc/filebeat/filebeat.yml
 
 2. Перезапуск Filebeat
 
-sudo systemctl restart filebeat
+systemctl restart filebeat
 
 3. Проверка данных в Elasticsearch
 
