@@ -11,6 +11,7 @@
     1. yum install https://dl.influxdata.com/telegraf/releases/telegraf-1.20.3-1.x86_64.rpm -y
     2. yum install https://dl.influxdata.com/chronograf/releases/chronograf-1.9.0.x86_64.rpm -y
     3. yum install https://dl.influxdata.com/kapacitor/releases/kapacitor-1.5.3.x86_64.rpm -y
+    4. yum install https://dl.influxdata.com/influxdb/releases/influxdb-1.8.9.x86_64.rpm -y
     4. systemctl start influxdb 
     5. influx
     6. CREATE USER "otus" WITH PASSWORD 'password' WITH ALL PRIVILEGES
