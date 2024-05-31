@@ -1,0 +1,65 @@
+sources:
+  nginx_logs:
+    type: file
+    include:
+      - /var/log/nginx/*.log
+    read_from: beginning
+
+  php_fpm_logs:
+    type: file
+    include:
+      - /var/log/php-fpm/error.log
+    read_from: beginning
+
+  postgresql_logs:
+    type: file
+    include:
+      - /newpgdata/pgsql/12/data/log/postgresql-*.log
+    read_from: beginning
+
+transforms:
+  nginx_parser:
+    type: remap
+    inputs:
+      - nginx_logs
+    source: |
+      match = parse_regex(.message, r'^(?P<timestamp>[0-9\-]{10}T[0-9:]{8}\.[0-9]+Z) (?P<remote_ip>\d+\.\d+\.\d+\.\d+) \[(?P<request_time>[^\]]+)\] (?P<message>.+)$') ?? {}
+      .timestamp = match.timestamp
+      .remote_ip = match.remote_ip
+      .request_time = match.request_time
+      .message = match.message
+
+  php_fpm_parser:
+    type: remap
+    inputs:
+      - php_fpm_logs
+    source: |
+      match = parse_regex(.message, r'^(?P<timestamp>[0-9\-T:.]+) \[(?P<log_level>[a-zA-Z]+)\] (?P<message>.*)$') ?? {}
+      .timestamp = match.timestamp
+      .log_level = match.log_level
+      .message = match.message
+
+  postgresql_parser:
+    type: remap
+    inputs:
+      - postgresql_logs
+    source: |
+      match = parse_regex(.message, r'^(?P<timestamp>[0-9\-T:.]+) (?P<log_level>[a-zA-Z]+): \[(?P<pid>[0-9]+)\] (?P<message>.*)$') ?? {}
+      .timestamp = match.timestamp
+      .log_level = match.log_level
+      .pid = match.pid
+      .message = match.message
+
+sinks:
+  elasticsearch:
+    type: elasticsearch
+    inputs:
+      - nginx_parser
+      - php_fpm_parser
+      - postgresql_parser
+    endpoints: ["http://localhost:9200"]
+    mode: bulk
+    data_stream:
+      type: logs
+      dataset: filebeat
+      namespace: default
