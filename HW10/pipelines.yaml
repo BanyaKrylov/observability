@@ -1,0 +1,13 @@
+log-pipeline:
+  source:
+    http:
+      port: 4777
+      path: /ingest
+  sink:
+    - opensearch:
+        hosts: [ "https://localhost:9200" ]
+        insecure: true
+        username: admin
+        password: P@ssw0rd
+        index: "logs"
+
