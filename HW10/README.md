@@ -96,3 +96,66 @@ vim pipelines/pipelines.yaml
 ./bin/data-prepper
 
 12. Идем как в Kibana создаем индексы и фильтруем по нужному нам сервису логи.
+
+Задание со звездочкой
+
+Настройте политики жизненного цикла как в занятии по elasticstack только через ISM.
+
+1. Создания политики ISM
+
+curl -X PUT "https://localhost:9200/_opendistro/_ism/policies/logs_policy" -H 'Content-Type: application/json' -d'
+{
+  "policy": {
+    "description": "Policy for managing log indices",
+    "default_state": "hot",
+    "states": [
+      {
+        "name": "hot",
+        "actions": [],
+        "transitions": [
+          {
+            "state_name": "warm",
+            "conditions": {
+              "min_index_age": "30d"
+            }
+          }
+        ]
+      },
+      {
+        "name": "warm",
+        "actions": [],
+        "transitions": [
+          {
+            "state_name": "delete",
+            "conditions": {
+              "min_index_age": "60d"
+            }
+          }
+        ]
+      },
+      {
+        "name": "delete",
+        "actions": [
+          {
+            "delete": {}
+          }
+        ],
+        "transitions": []
+      }
+    ]
+  }
+}'
+
+2. Применение политики ISM к индексу
+
+curl -X PUT "https://localhost:9200/logs/_settings" -H 'Content-Type: application/json' -d'
+{
+  "settings": {
+    "index.opendistro.index_state_management.policy_id": "logs_policy"
+  }
+}'
+
+3. Проверка статуса индекса
+
+curl -X GET "https://localhost:9200/logs/_opendistro/_ism/explain"
+
