@@ -1,0 +1,66 @@
+groups:
+- name: kafka_alerts
+  rules:
+  - alert: KafkaOfflinePartitions
+    expr: kafka_controller_kafkacontroller_offlinepartitionscount > 0
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Kafka имеет оффлайн разделы"
+      description: "В кластере Kafka есть оффлайн разделы: {{ $value }}."
+
+  - alert: KafkaUnderReplicatedPartitions
+    expr: kafka_server_replicamanager_underreplicatedpartitions > 0
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: "Kafka имеет недореплицированные разделы"
+      description: "В кластере Kafka есть недореплицированные разделы: {{ $value }}."
+
+  - alert: KafkaBrokerDown
+    expr: kafka_broker_count < count(kafka_broker_info)
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Kafka брокер недоступен"
+      description: "Один или несколько брокеров Kafka недоступны."
+
+  - alert: KafkaHighConsumerLag
+    expr: kafka_consumergroup_lag > 10000
+    for: 10m
+    labels:
+      severity: warning
+    annotations:
+      summary: "Высокое отставание потребителей Kafka"
+      description: "Отставание потребителей Kafka превышает порог в 10000 сообщений."
+
+  - alert: KafkaTopicUnderReplicated
+    expr: kafka_topic_partition_under_replicated > 0
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Разделы темы Kafka не реплицируются"
+      description: "Некоторые разделы темы Kafka не реплицируются должным образом."
+
+  - alert: KafkaTopicSizeGrowth
+    expr: rate(kafka_topic_partition_current_offset[5m]) > 500000
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: "Быстрый рост размера темы Kafka"
+      description: "Размер темы Kafka увеличивается быстрее 500000 сообщений за 5 минут."
+
+  - alert: KafkaUnderMinISR
+    expr: kafka_topic_partition_in_sync_replica < kafka_topic_partition_min_isr
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Kafka разделы имеют меньше реплик, чем минимально допустимо"
+      description: "Некоторые разделы Kafka имеют количество реплик меньше, чем минимально допустимое значение."
+

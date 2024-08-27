@@ -1,0 +1,38 @@
+groups:
+- name: postgres_alerts
+  rules:
+  - alert: PostgresHighConnectionCount
+    expr: pg_stat_activity_count{job=~"$job", instance=~"$instance"} > 100
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Высокое количество подключений к Postgres на {{ $labels.instance }}"
+      description: "Количество активных подключений к Postgres на {{ $labels.instance }} превышает 100 в течение 5 минут."
+
+  - alert: PostgresLongRunningQueries
+    expr: pg_stat_activity_max_tx_duration_seconds{job=~"$job", instance=~"$instance"} > 300
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: "Долгосрочные запросы в Postgres на {{ $labels.instance }}"
+      description: "Есть запросы, выполняющиеся более 5 минут на инстансе {{ $labels.instance }}."
+
+  - alert: PostgresReplicationLag
+    expr: pg_stat_replication_lag_bytes{job=~"$job", instance=~"$instance"} > 10000000
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: "Высокое отставание репликации в Postgres на {{ $labels.instance }}"
+      description: "Отставание репликации на {{ $labels.instance }} превышает 10 MB в течение 5 минут."
+
+  - alert: PostgresDeadlocks
+    expr: increase(pg_stat_database_deadlocks{job=~"$job", instance=~"$instance"}[5m]) > 0
+    for: 5m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Обнаружены дедлоки в Postgres на {{ $labels.instance }}"
+      description: "Обнаружены дедлоки в базе данных на инстансе {{ $labels.instance }} за последние 5 минут."

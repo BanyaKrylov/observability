@@ -1,0 +1,58 @@
+groups:
+- name: availability_alerts
+  rules:
+  - alert: InstanceDown
+    expr: probe_success{job=~"$job", instance=~"$instance"} != 1
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Недоступен {{ $labels.instance }}"
+      description: "Инстанс {{ $labels.instance }} из задания {{ $labels.job }} не доступен."
+
+  - alert: AgentDown
+    expr: node_systemd_unit_state{name="bzsenagent.service",state="active",type="simple"} != 1
+    for: 1m
+    labels:
+      severity: warning
+    annotations:
+      summary: "Недоступен bzsenagent.service"
+      description: "Проверьте службу systemctl status bzsenagent."
+
+  - alert: ServerDown
+    expr: node_systemd_unit_state{name="bzserver.service",state="active",type="simple"} != 1
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Недоступен bzserver.service"
+      description: "Проверьте службу systemctl status bzserver."
+
+  - alert: HighCPUUsage
+    expr: process_cpu_seconds_total{job=~"$job", instance=~"$instance"} > 80
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: "Высокая загрузка ЦПУ на {{ $labels.instance }}"
+      description: "На инстансе {{ $labels.instance }} задание {{ $labels.job }} использует более 80% ЦПУ в течение 5 минут."
+
+- name: disk_alerts
+  rules:
+  - alert: DiskSpaceLow
+    expr: node_filesystem_free_bytes{job=~"$job", instance=~"$instance"} / node_filesystem_size_bytes{job=~"$job", instance=~"$instance"} < 0.1
+    for: 10m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Мало места на диске на {{ $labels.instance }}"
+      description: "На инстансе {{ $labels.instance }} задание {{ $labels.job }} свободное место на диске менее 10%."
+
+  - alert: DiskIOHigh
+    expr: rate(node_disk_io_time_seconds_total{job=~"$job", instance=~"$instance"}[5m]) > 0.9
+    for: 5m
+    labels:
+      severity: warning
+    annotations:
+      summary: "Высокая активность диска на {{ $labels.instance }}"
+      description: "На инстансе {{ $labels.instance }} задание {{ $labels.job }} наблюдается высокая активность диска в течение последних 5 минут."

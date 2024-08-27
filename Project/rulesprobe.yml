@@ -1,0 +1,12 @@
+groups:
+- name: availability_alerts
+  rules:
+  - alert: InstanceDown
+    expr: probe_success{job=~"$job", instance=~"$instance"} != 1
+    for: 1m
+    labels:
+      severity: critical
+    annotations:
+      summary: "Недоступен {{ $labels.instance }}"
+      description: "Инстанс {{ $labels.instance }} из задания {{ $labels.job }} не доступен."
+

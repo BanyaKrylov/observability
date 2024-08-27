@@ -43,7 +43,7 @@ yum install vector
 
 10. Настройка Vector
 
-vim /etc/vector/vector.yaml
+vim с
 
 11. Запуск и проверка Vector
 
